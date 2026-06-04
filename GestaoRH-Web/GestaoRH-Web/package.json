@@ -1,0 +1,16 @@
+{
+  "name": "gestao-rh-microfrontend",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:shell": "npm run dev -w shell",
+    "dev:people": "npm run dev -w mfe-people",
+    "dev:documents": "npm run dev -w mfe-documents",
+    "build": "npm run build -w @gestao-rh/shared && npm run build -w mfe-people && npm run build -w mfe-documents && npm run build -w shell",
+    "preview:shell": "npm run preview -w shell"
+  }
+}
