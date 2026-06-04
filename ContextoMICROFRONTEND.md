@@ -1,6 +1,6 @@
-# Contexto da Etapa 1 - Microfrontend
+# Contexto da Etapa 1 e Evolucao Atual - Microfrontend
 
-Este arquivo registra o contexto da primeira grande atualizacao do frontend para nao perder continuidade nas proximas conversas.
+Este arquivo registra o contexto da primeira grande atualizacao do frontend e sua evolucao atual para nao perder continuidade nas proximas conversas.
 
 ## Objetivo desta etapa
 
@@ -205,6 +205,115 @@ npm run dev:shell
 npm run build
 ```
 
+## Evolucao posterior - Integracao com BFF e Microservico 1
+
+Depois da estrutura inicial de microfrontend, o frontend foi atualizado para acompanhar o estado atual da arquitetura distribuida:
+
+- `front -> BFF -> microservico 1`
+
+### Estado atual da integracao
+
+- `people` continua preparado para consumir o BFF
+- `people` ainda pode depender de mock controlado pelo proprio BFF
+- `documents` agora foi adaptado para uso real via BFF
+- o BFF passa a ser a unica entrada do frontend
+- o frontend continua sem acessar microservices diretamente
+
+### Ajustes implementados nessa evolucao
+
+#### Camada shared
+
+Foi evoluida para suportar operacoes HTTP alem de `GET`:
+
+- `GET`
+- `POST`
+- `PUT`
+- `DELETE`
+
+Arquivo principal:
+
+- `packages/shared/src/services/httpClient.js`
+
+#### Service de documents
+
+O dominio `documents` passou a suportar:
+
+- listar documentos
+- buscar documento por id
+- criar documento
+- editar documento
+- excluir documento
+
+Arquivo principal:
+
+- `packages/shared/src/services/documentsService.js`
+
+#### MFE Documents
+
+O `mfe-documents` deixou de ser apenas demonstrativo e passou a suportar fluxo funcional via BFF:
+
+- listagem
+- detalhe
+- criacao
+- edicao
+- exclusao
+
+Arquivo principal:
+
+- `apps/mfe-documents/src/bootstrap.jsx`
+
+#### Shell
+
+A tela agregada da shell foi atualizada para refletir explicitamente o estado atual da arquitetura:
+
+- `people` vindo do BFF
+- `documents` vindo do BFF com microservico Mongo por tras
+
+Arquivo principal:
+
+- `apps/shell/src/pages/OverviewPage.jsx`
+
+#### Documentacao e ambiente
+
+Tambem foram atualizados:
+
+- `.env.example`
+- `README.md`
+
+### Contratos atualmente esperados pelo frontend
+
+Shell:
+
+- `GET /aggregated-data`
+
+People:
+
+- `GET /people`
+- `GET /people/{id}`
+
+Documents:
+
+- `GET /documents`
+- `GET /documents/{id}`
+- `POST /documents`
+- `PUT /documents/{id}`
+- `DELETE /documents/{id}`
+
+### Observacao importante sobre payload de documents
+
+Na implementacao atual do frontend, o formulario de `documents` trabalha com o seguinte modelo:
+
+- `title`
+- `employeeName`
+- `department`
+- `description`
+- `status`
+- `pendingSignatures`
+
+Se o DTO real do BFF usar nomes diferentes, o ajuste deve ser feito em:
+
+- `packages/shared/src/services/documentsService.js`
+
 ## O que esta atendido do item 1
 
 - SPA em React
@@ -216,8 +325,8 @@ npm run build
 
 ## O que ainda falta nas proximas etapas
 
-- criar o BFF real em Node.js
-- implementar os endpoints reais
+- consolidar o contrato real de `documents` com o BFF
+- conectar `people` a um downstream real quando o microservico existir
 - integrar autenticacao real
 - publicar shell e remotes
 - conectar API Gateway
@@ -235,10 +344,11 @@ Considerar sempre:
    - `packages/shared`
 3. O frontend deve consumir somente o BFF.
 4. Nao devemos religar o frontend diretamente em microservices.
-5. Enquanto o BFF nao existir, usar mocks do pacote `shared`.
-6. Novas features devem entrar por dominio.
-7. Sempre manter compatibilidade com `Module Federation`.
-8. Refatoracoes grandes devem continuar alinhadas ao que a disciplina pede.
+5. Hoje `documents` ja deve preferir fluxo real via BFF; mocks ficam como fallback local.
+6. `people` ainda pode continuar mockado no BFF ate existir downstream real.
+7. Novas features devem entrar por dominio.
+8. Sempre manter compatibilidade com `Module Federation`.
+9. Refatoracoes grandes devem continuar alinhadas ao que a disciplina pede.
 
 ## Arquivos-chave para retomada
 
