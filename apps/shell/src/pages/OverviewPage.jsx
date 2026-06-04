@@ -44,8 +44,9 @@ export default function OverviewPage() {
           <p className="eyebrow">Endpoint obrigatorio</p>
           <h2>GET /aggregated-data</h2>
           <p>
-            Esta tela representa o contrato principal da shell. Quando o BFF estiver pronto, basta apontar
-            a variavel `VITE_BFF_BASE_URL`.
+            Esta tela representa o contrato principal da shell. No estado atual, ela deve apontar para o
+            BFF, que agrega `people` mockado, `documents` do Mongo e o resumo enriquecido da camada
+            intermediaria.
           </p>
         </div>
         <span className={`status-pill${isMockMode ? ' warn' : ''}`}>
@@ -118,6 +119,15 @@ export default function OverviewPage() {
           </ul>
         </article>
       </section>
+
+      <article className="surface-card">
+        <p className="eyebrow">Estado atual da integracao</p>
+        <h2>Front para BFF para Microservico 1</h2>
+        <p>
+          <code>people</code> ainda pode vir de mock controlado pelo BFF, enquanto <code>documents</code>{' '}
+          ja deve refletir o microservico MongoDB Atlas por tras da rota publica do BFF.
+        </p>
+      </article>
     </div>
   )
 }

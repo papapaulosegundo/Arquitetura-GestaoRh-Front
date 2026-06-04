@@ -6,7 +6,7 @@ Frontend da atividade de arquitetura evoluido para o modelo de microfrontend em 
 
 - `apps/shell`: SPA host responsavel por layout, navegacao e visao agregada.
 - `apps/mfe-people`: microfrontend remoto do dominio de pessoas.
-- `apps/mfe-documents`: microfrontend remoto do dominio de documentos.
+- `apps/mfe-documents`: microfrontend remoto do dominio de documentos, agora preparado para operar via BFF com o microservico Mongo.
 - `packages/shared`: client compartilhado preparado para consumir o BFF.
 
 ## Tecnologias
@@ -39,16 +39,24 @@ Se quiser usar mocks locais:
 VITE_USE_MOCKS=true
 ```
 
-Quando o BFF estiver pronto:
+Para o fluxo atual com o BFF:
 
 ```bash
 VITE_USE_MOCKS=false
 VITE_BFF_BASE_URL=http://localhost:8080
 ```
 
+No estado atual da arquitetura:
+
+- `GET /aggregated-data` deve vir do BFF
+- `people` ainda pode estar mockado no BFF
+- `documents` deve vir do BFF conectado ao microservico 1 em MongoDB
+- o frontend nao acessa o microservico diretamente
+
 ## Entrega
 
 - Shell pronta para consumir `GET /aggregated-data`
+- `mfe-documents` preparado para consumir `GET`, `POST`, `PUT` e `DELETE` via BFF
 - Remotes preparados para consumir endpoints do BFF
 - Nenhum microfrontend acessa microservices diretamente
 
