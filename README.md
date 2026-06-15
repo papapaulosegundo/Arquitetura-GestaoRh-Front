@@ -44,7 +44,18 @@ Para o fluxo atual com o BFF:
 ```bash
 VITE_USE_MOCKS=false
 VITE_BFF_BASE_URL=http://localhost:8080
+VITE_BFF_API_PREFIX=
+VITE_REMOTE_PEOPLE_URL=http://localhost:4173/assets/remoteEntry.js
+VITE_REMOTE_DOCUMENTS_URL=http://localhost:4174/assets/remoteEntry.js
 ```
+
+Se o BFF expuser as rotas publicas com prefixo, por exemplo `/api/people` e `/api/documents`, basta ajustar:
+
+```bash
+VITE_BFF_API_PREFIX=api
+```
+
+Para evitar erro de Module Federation, os remotes tambem precisam estar acessiveis nessas URLs. As portas agora usam `strictPort`, entao se `4173` ou `4174` estiverem ocupadas o Vite falha ao subir em vez de trocar para outra porta sem avisar.
 
 No estado atual da arquitetura:
 
@@ -62,4 +73,8 @@ No estado atual da arquitetura:
 
 ## Alunos
 
-Ver arquivo `GRUPO.md`.
+- Paulo César Muchalski
+- Paulo Vitor
+- Giulia Casteluci
+- Juliano
+- Gabriela Otte
