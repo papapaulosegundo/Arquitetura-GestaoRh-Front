@@ -5,6 +5,9 @@ import LandingPage from './pages/LandingPage'
 import OverviewPage from './pages/OverviewPage'
 import SettingsPage from './pages/SettingsPage'
 
+const peopleRemoteUrl = import.meta.env.VITE_REMOTE_PEOPLE_URL ?? 'http://localhost:4173/assets/remoteEntry.js'
+const documentsRemoteUrl = import.meta.env.VITE_REMOTE_DOCUMENTS_URL ?? 'http://localhost:4174/assets/remoteEntry.js'
+
 export default function App() {
   return (
     <Routes>
@@ -13,11 +16,23 @@ export default function App() {
         <Route path="/overview" element={<OverviewPage />} />
         <Route
           path="/people/*"
-          element={<RemoteMount scope="Pessoas" importRemote={() => import('mfePeople/PeopleApp')} />}
+          element={
+            <RemoteMount
+              scope="Pessoas"
+              remoteUrl={peopleRemoteUrl}
+              importRemote={() => import('mfePeople/PeopleApp')}
+            />
+          }
         />
         <Route
           path="/documents/*"
-          element={<RemoteMount scope="Documentos" importRemote={() => import('mfeDocuments/DocumentsApp')} />}
+          element={
+            <RemoteMount
+              scope="Documentos"
+              remoteUrl={documentsRemoteUrl}
+              importRemote={() => import('mfeDocuments/DocumentsApp')}
+            />
+          }
         />
         <Route path="/settings" element={<SettingsPage />} />
       </Route>

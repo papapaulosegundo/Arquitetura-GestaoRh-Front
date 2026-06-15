@@ -1,8 +1,16 @@
 import axios from 'axios'
 
-const baseURL = import.meta.env.VITE_BFF_BASE_URL ?? 'http://localhost:8080'
+const rawBaseURL = import.meta.env.VITE_BFF_BASE_URL ?? 'http://localhost:8080'
+const baseURL = rawBaseURL.replace(/\/+$/, '')
+const rawApiPrefix = import.meta.env.VITE_BFF_API_PREFIX ?? ''
+const apiPrefix = rawApiPrefix ? `/${rawApiPrefix.replace(/^\/+|\/+$/g, '')}` : ''
 
 export const isMockMode = (import.meta.env.VITE_USE_MOCKS ?? 'false') === 'true'
+
+export function buildBffPath(path) {
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`
+  return `${apiPrefix}${normalizedPath}`
+}
 
 const client = axios.create({
   baseURL,
@@ -17,7 +25,7 @@ export async function requestFromBff({ path, method = 'get', data, fallbackFacto
   }
 
   const response = await client.request({
-    url: path,
+    url: buildBffPath(path),
     method,
     data,
   })

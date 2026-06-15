@@ -16,9 +16,11 @@ export default defineConfig({
   ],
   server: {
     port: 4173,
+    strictPort: true,
   },
   preview: {
     port: 4183,
+    strictPort: true,
   },
   build: {
     modulePreload: false,
