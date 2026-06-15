@@ -5,8 +5,8 @@ import LandingPage from './pages/LandingPage'
 import OverviewPage from './pages/OverviewPage'
 import SettingsPage from './pages/SettingsPage'
 
-const peopleRemoteUrl = import.meta.env.VITE_REMOTE_PEOPLE_URL ?? 'http://localhost:4173/assets/remoteEntry.js'
-const documentsRemoteUrl = import.meta.env.VITE_REMOTE_DOCUMENTS_URL ?? 'http://localhost:4174/assets/remoteEntry.js'
+const peopleRemoteUrl = import.meta.env.VITE_REMOTE_PEOPLE_URL ?? 'http://localhost:4183/assets/remoteEntry.js'
+const documentsRemoteUrl = import.meta.env.VITE_REMOTE_DOCUMENTS_URL ?? 'http://localhost:4184/assets/remoteEntry.js'
 
 export default function App() {
   return (

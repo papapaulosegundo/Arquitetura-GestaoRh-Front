@@ -8,8 +8,8 @@
   ],
   "scripts": {
     "dev:shell": "npm run dev -w shell",
-    "dev:people": "npm run dev -w mfe-people",
-    "dev:documents": "npm run dev -w mfe-documents",
+    "dev:people": "npm run build -w mfe-people && npm run preview -w mfe-people",
+    "dev:documents": "npm run build -w mfe-documents && npm run preview -w mfe-documents",
     "build": "npm run build -w @gestao-rh/shared && npm run build -w mfe-people && npm run build -w mfe-documents && npm run build -w shell",
     "preview:shell": "npm run preview -w shell"
   }

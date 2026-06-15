@@ -11,8 +11,8 @@ export default defineConfig(({ mode }) => {
       federation({
         name: 'shell',
         remotes: {
-          mfePeople: env.VITE_REMOTE_PEOPLE_URL ?? 'http://localhost:4173/assets/remoteEntry.js',
-          mfeDocuments: env.VITE_REMOTE_DOCUMENTS_URL ?? 'http://localhost:4174/assets/remoteEntry.js',
+          mfePeople: env.VITE_REMOTE_PEOPLE_URL ?? 'http://localhost:4183/assets/remoteEntry.js',
+          mfeDocuments: env.VITE_REMOTE_DOCUMENTS_URL ?? 'http://localhost:4184/assets/remoteEntry.js',
         },
         shared: ['react', 'react-dom', 'react-router-dom'],
       }),
