@@ -60,9 +60,33 @@ Para evitar erro de Module Federation, os remotes tambem precisam estar acessive
 No estado atual da arquitetura:
 
 - `GET /aggregated-data` deve vir do BFF
-- `people` ainda pode estar mockado no BFF
-- `documents` deve vir do BFF conectado ao microservico 1 em MongoDB
+- `people` deve vir do BFF conectado ao microservico Azure SQL
+- `documents` deve vir do BFF conectado ao microservico MongoDB
+- a Azure Function pode aparecer no frontend via `aggregated-data`, mas na `main` do BFF ela continua mockada por configuracao padrao
 - o frontend nao acessa o microservico diretamente
+
+## Validacao para o video
+
+Para demonstrar o fluxo completo no frontend, o ambiente esperado e:
+
+- BFF em `http://localhost:8080`
+- shell em `http://localhost:5173`
+- `mfe-people` em `http://localhost:4183/assets/remoteEntry.js`
+- `mfe-documents` em `http://localhost:4184/assets/remoteEntry.js`
+- microservico `People` em `http://localhost:5096`
+- microservico `Documents` em `http://localhost:5102`
+
+Fluxos que o frontend ja cobre:
+
+- `/overview`: chama `GET /aggregated-data`
+- `/people`: CRUD completo via BFF
+- `/documents`: CRUD completo via BFF
+
+Observacao importante para a apresentacao:
+
+- o frontend prova o fluxo `frontend -> BFF -> people/documents`
+- a parte de Azure Function depende do BFF estar configurado com `UseFunctionMocks=false` se a ideia for mostrar integracao real em runtime
+- se o BFF estiver com `UseFunctionMocks=true`, o frontend continua funcionando, mas os insights da overview nao estao vindo da Function real
 
 ## Entrega
 
