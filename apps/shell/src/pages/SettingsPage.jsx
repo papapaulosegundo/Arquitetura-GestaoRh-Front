@@ -1,31 +1,65 @@
+import { isMockMode } from '@gestao-rh/shared'
+
 export default function SettingsPage() {
+  const bffUrl = import.meta.env.VITE_BFF_BASE_URL ?? 'http://localhost:8080'
+
   return (
     <section className="card-grid">
-      <article className="surface-card">
-        <p className="eyebrow">Arquitetura adotada</p>
-        <h2>Shell + remotes por dominio</h2>
-        <p>
-          `shell` concentra navegacao, autenticacao futura e layout global. `mfe-people` e
-          `mfe-documents` carregam em runtime pela federacao de modulos.
+      <article className="surface-card" style={{ gridColumn: 'span 2' }}>
+        <h2>Configurações do Ambiente</h2>
+        <p style={{ marginBottom: '20px' }}>
+          Visualize o status das conexões do front-end com o ecossistema de microserviços e BFF da plataforma.
         </p>
+
+        <div className="stack-lg" style={{ gap: '16px' }}>
+          <div className="feedback-card" style={{ background: '#f1f5f9', border: '1px solid #e2e8f0', color: '#334155' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+              <strong>URL Base do BFF:</strong>
+              <code style={{ background: '#ffffff', padding: '2px 8px', borderRadius: '4px', border: '1px solid #cbd5e1' }}>
+                {bffUrl}
+              </code>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <strong>Modo de Simulação (Mocks):</strong>
+              <span className={`status-pill small ${isMockMode ? 'warn' : ''}`}>
+                {isMockMode ? 'Simulação Ativa' : 'Integração Direta'}
+              </span>
+            </div>
+          </div>
+        </div>
       </article>
 
       <article className="surface-card">
-        <p className="eyebrow">Proxima etapa</p>
-        <h2>Conectar ao BFF</h2>
-        <p>
-          Os services compartilhados ja apontam para recursos do BFF. Quando seus endpoints existirem,
-          remova o mock definindo `VITE_USE_MOCKS=false` e configure `VITE_BFF_BASE_URL`.
+        <h2>Downstream Relacional (SQL)</h2>
+        <p style={{ marginBottom: '14px', fontSize: '0.85rem' }}>
+          Responsável pelo domínio de Pessoas e Organizações, hospedado no Azure SQL Database.
         </p>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Status de Comunicação</span>
+          <span className="status-pill small">Operacional</span>
+        </div>
       </article>
 
       <article className="surface-card">
-        <p className="eyebrow">Entrega academica</p>
-        <h2>O que ja fica atendido</h2>
-        <p>
-          SPA em React, abordagem de microfrontend, duas funcionalidades separadas por dominio e consumo
-          centralizado via camada pronta para o BFF.
+        <h2>Downstream NoSQL (MongoDB)</h2>
+        <p style={{ marginBottom: '14px', fontSize: '0.85rem' }}>
+          Responsável pelo armazenamento de contratos estruturados e metadados no MongoDB Atlas.
         </p>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Status de Comunicação</span>
+          <span className="status-pill small">Operacional</span>
+        </div>
+      </article>
+
+      <article className="surface-card">
+        <h2>Provedor de Funções (Serveless)</h2>
+        <p style={{ marginBottom: '14px', fontSize: '0.85rem' }}>
+          Fornece alertas inteligentes baseados em regras de negócio no Azure Functions.
+        </p>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Status de Comunicação</span>
+          <span className="status-pill small">Operacional</span>
+        </div>
       </article>
     </section>
   )

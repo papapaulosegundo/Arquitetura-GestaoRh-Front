@@ -1,28 +1,28 @@
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 
 const navItems = [
-  { to: '/overview', label: 'Visao geral', description: 'Endpoint agregado do BFF' },
-  { to: '/people', label: 'Pessoas', description: 'Microfrontend remoto 1' },
-  { to: '/documents', label: 'Documentos', description: 'Microfrontend remoto 2' },
-  { to: '/settings', label: 'Arquitetura', description: 'Guia da entrega' },
+  { to: '/overview', label: 'Visão Geral', description: 'Painel administrativo integrado' },
+  { to: '/people', label: 'Colaboradores', description: 'Gestão de cadastro e setores' },
+  { to: '/documents', label: 'Documentos', description: 'Contratos e assinaturas digitais' },
+  { to: '/settings', label: 'Configurações', description: 'Parâmetros e conexões' },
 ]
 
 const pageMeta = {
   '/overview': {
-    title: 'Shell de RH',
-    subtitle: 'SPA host que orquestra os microfrontends e centraliza o acesso ao BFF.',
+    title: 'Visão Geral',
+    subtitle: 'Acompanhamento integrado de colaboradores e fluxos de documentos.',
   },
   '/people': {
-    title: 'Dominio Pessoas',
-    subtitle: 'Remote independente preparado para consumir o BFF de funcionarios.',
+    title: 'Gestão de Colaboradores',
+    subtitle: 'Registro operacional de funcionários, cargos e setores da empresa.',
   },
   '/documents': {
-    title: 'Dominio Documentos',
-    subtitle: 'Remote independente preparado para consumir o BFF de documentos.',
+    title: 'Contratos e Documentos',
+    subtitle: 'Controle de validade, envios e status de assinaturas.',
   },
   '/settings': {
-    title: 'Guia da Arquitetura',
-    subtitle: 'Checklist da atividade e orientacoes para execucao local.',
+    title: 'Configurações do Sistema',
+    subtitle: 'Parametrização de variáveis globais e conexões com microserviços.',
   },
 }
 
@@ -37,18 +37,9 @@ export default function ShellLayout() {
         <div className="shell-brand">
           <div className="shell-brand-mark">RH</div>
           <div>
-            <strong>GestaoRH MFE</strong>
-            <span>Shell + Module Federation</span>
+            <strong>GestãoRH</strong>
+            <span>Portal Corporativo</span>
           </div>
-        </div>
-
-        <div className="shell-panel">
-          <p className="eyebrow">Fluxo da entrega</p>
-          <h2>Frontend desacoplado do backend</h2>
-          <p>
-            A shell fala somente com endpoints do BFF e carrega duas funcionalidades de negocio como
-            microfrontends independentes.
-          </p>
         </div>
 
         <nav className="shell-nav">
@@ -63,12 +54,20 @@ export default function ShellLayout() {
             </NavLink>
           ))}
         </nav>
+
+        <div className="shell-sidebar-profile">
+          <div className="shell-profile-avatar">AD</div>
+          <div className="shell-profile-info">
+            <strong>Administrador</strong>
+            <span>Gestor do Sistema</span>
+          </div>
+        </div>
       </aside>
 
       <div className="shell-content">
         <header className="shell-topbar">
           <div>
-            <p className="eyebrow">Microfrontend em React</p>
+            <p className="eyebrow">GestãoRH Console</p>
             <h1>{currentPage.title}</h1>
           </div>
           <p>{currentPage.subtitle}</p>

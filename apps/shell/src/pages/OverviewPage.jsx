@@ -23,10 +23,10 @@ export default function OverviewPage() {
     dashboardService
       .getAggregatedData()
       .then((data) => {
-        if (isMounted) setState(data)
+        if (isMounted && data) setState(data)
       })
       .catch(() => {
-        if (isMounted) setError('Nao foi possivel carregar o endpoint agregado do BFF.')
+        if (isMounted) setError('Não foi possível obter a consolidação de dados da API.')
       })
       .finally(() => {
         if (isMounted) setLoading(false)
@@ -41,51 +41,49 @@ export default function OverviewPage() {
     <div className="stack-lg">
       <section className="banner-card">
         <div>
-          <p className="eyebrow">Endpoint obrigatorio</p>
-          <h2>GET /aggregated-data</h2>
+          <h2>Painel de Controle Central</h2>
           <p>
-            Esta tela representa o contrato principal da shell. No estado atual, ela deve apontar para o
-            BFF, que agrega `people` mockado, `documents` do Mongo e o resumo enriquecido da camada
-            intermediaria.
+            Visão consolidada do departamento de Recursos Humanos. Este painel agrega indicadores operacionais de colaboradores, documentos regulatórios e insights gerados dinamicamente.
           </p>
         </div>
         <span className={`status-pill${isMockMode ? ' warn' : ''}`}>
-          {isMockMode ? 'Mock local ativo' : 'BFF ativo'}
+          {isMockMode ? 'Mocks Ativos' : 'Dados em Tempo Real'}
         </span>
       </section>
 
       {error ? (
-        <article className="surface-card">
-          <h2>Falha de integracao</h2>
-          <p>{error}</p>
+        <article className="feedback-card error">
+          <strong>Aviso:</strong> {error}
         </article>
       ) : null}
 
       <section className="metric-grid">
         <article className="metric-card">
-          <span>Total de colaboradores</span>
+          <span>Colaboradores Cadastrados</span>
           <strong>{loading ? '...' : state.summary.employees}</strong>
         </article>
         <article className="metric-card">
-          <span>Documentos gerados</span>
+          <span>Documentos Processados</span>
           <strong>{loading ? '...' : state.summary.documents}</strong>
         </article>
         <article className="metric-card">
-          <span>Assinaturas pendentes</span>
+          <span>Assinaturas Pendentes</span>
           <strong>{loading ? '...' : state.summary.pendingSignatures}</strong>
         </article>
       </section>
 
       <section className="card-grid">
         <article className="surface-card">
-          <p className="eyebrow">Pessoas</p>
-          <h2>Ultimos colaboradores</h2>
+          <h2>Últimos Colaboradores</h2>
           <ul className="simple-list">
+            {state.people.length === 0 && !loading ? (
+              <li><span>Nenhum colaborador registrado.</span></li>
+            ) : null}
             {state.people.map((person) => (
               <li key={person.id}>
                 <strong>{person.name}</strong>
                 <span>
-                  {person.department} • {person.status}
+                  {person.department} • {person.status === 'active' || person.status === 'Ativo' ? 'Ativo' : 'Inativo'}
                 </span>
               </li>
             ))}
@@ -93,14 +91,16 @@ export default function OverviewPage() {
         </article>
 
         <article className="surface-card">
-          <p className="eyebrow">Documentos</p>
-          <h2>Fluxo recente</h2>
+          <h2>Documentos Recentes</h2>
           <ul className="simple-list">
+            {state.documents.length === 0 && !loading ? (
+              <li><span>Nenhum documento gerado.</span></li>
+            ) : null}
             {state.documents.map((document) => (
               <li key={document.id}>
                 <strong>{document.title}</strong>
                 <span>
-                  {document.employeeName} • {document.statusLabel}
+                  {document.employeeName} • {document.statusLabel || document.status}
                 </span>
               </li>
             ))}
@@ -108,26 +108,19 @@ export default function OverviewPage() {
         </article>
 
         <article className="surface-card">
-          <p className="eyebrow">Function ready</p>
-          <h2>Insights de enriquecimento</h2>
-          <ul className="simple-list">
-            {state.insights.map((insight) => (
-              <li key={insight}>
-                <strong>{insight}</strong>
-              </li>
+          <h2>Alertas & Insights</h2>
+          <div className="stack-lg" style={{ marginTop: '16px', gap: '12px' }}>
+            {state.insights.length === 0 && !loading ? (
+              <div className="insight-text">Sem novos alertas no sistema.</div>
+            ) : null}
+            {state.insights.map((insight, index) => (
+              <div key={index} className="insight-text">
+                🔔 {insight}
+              </div>
             ))}
-          </ul>
+          </div>
         </article>
       </section>
-
-      <article className="surface-card">
-        <p className="eyebrow">Estado atual da integracao</p>
-        <h2>Front para BFF para Microservico 1</h2>
-        <p>
-          <code>people</code> ainda pode vir de mock controlado pelo BFF, enquanto <code>documents</code>{' '}
-          ja deve refletir o microservico MongoDB Atlas por tras da rota publica do BFF.
-        </p>
-      </article>
     </div>
   )
 }
