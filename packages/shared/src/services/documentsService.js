@@ -42,13 +42,19 @@ function normalizeDocument(document) {
   return {
     id: String(document.id ?? document.documentId ?? ''),
     title: document.title ?? document.name ?? 'Documento sem titulo',
-    employeeName: document.employeeName ?? document.employee ?? 'Nao informado',
-    department: document.department ?? document.area ?? 'Nao informado',
+    employeeName: document.employeeName ?? document.employee ?? document.ownerName ?? document.owner ?? 'Nao informado',
+    department: document.department ?? document.area ?? document.category ?? 'Nao informado',
     status,
     statusLabel: document.statusLabel ?? statusLabelMap[status] ?? status,
     pendingSignatures,
-    updatedAt: formatDate(document.updatedAt ?? document.updatedOn ?? document.lastUpdatedAt),
-    description: document.description ?? document.summary ?? 'Sem descricao informada.',
+    updatedAt: formatDate(
+      document.updatedAt ??
+        document.updatedOn ??
+        document.updatedAtUtc ??
+        document.lastUpdatedAt ??
+        document.lastUpdatedAtUtc,
+    ),
+    description: document.description ?? document.summary ?? document.content ?? 'Sem descricao informada.',
   }
 }
 

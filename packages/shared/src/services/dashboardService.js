@@ -24,21 +24,15 @@ function normalizeAggregatedData(data) {
       documents: documents.map((d) => ({
         id: d.id,
         title: d.title,
-        category: d.category,
-        employeeName: d.owner,
+        category: d.department ?? d.category,
+        employeeName: d.employeeName ?? d.owner,
         statusLabel: d.status,
         status: d.status,
       })),
       summary: {
         employees: functionData.totalPeople ?? people.length,
         documents: functionData.totalDocuments ?? documents.length,
-        pendingSignatures: documents.filter(
-          (d) =>
-            d.status === 'pending' ||
-            d.status === 'aguardando_assinatura' ||
-            d.status === 'parcial' ||
-            d.status === 'partially_signed',
-        ).length,
+        pendingSignatures: documents.reduce((sum, d) => sum + Number(d.pendingSignatures ?? 0), 0),
       },
       insights: functionData.message
         ? [functionData.message]
